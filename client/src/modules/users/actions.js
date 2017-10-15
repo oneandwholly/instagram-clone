@@ -11,6 +11,20 @@ export const addUser = (user) => {
     }
 }
 
+export const fetchUserWithUsername = (username) => {
+    return (dispatch) => {
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: { authorization: token }
+        };
+        return axios.get(`${window.location.protocol}//${window.location.host}/api/users/username/${username}`, config)
+            .then((res) => {
+                const user = res.data;
+                dispatch(addUser(user));
+            });
+        }
+}
+
 export const fetchUserWithToken = () => {
     return (dispatch) => {
         const token = localStorage.getItem('token');

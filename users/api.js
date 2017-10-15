@@ -59,6 +59,39 @@ router.get('/self', requireAuth, (req, res, next) => {
   })
 })
 
+router.get('/username/:username', requireAuth, (req, res, next) => {
+  User.readByUsername(req.params.username, (err, user) => {
+    if (err) {
+      next(err);
+      return;
+    }
+
+    delete user.password;
+
+    // get media, follows, followed_by counts
+    user.counts = { photos: null, follows: null, followed_by: null };
+    Photo.getCountByUserId(user.id, (err, count) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      user.counts.photos = count.photo_count;
+  
+      Follow.getBothCountsByUserId(user.id, (err, counts) => {
+        if (err) {
+          next(err);
+          return;
+        }
+  
+        user.counts.follows = counts.follows_count;
+        user.counts.followed_by = counts.followed_by_count;
+    
+        res.json(user);
+      })
+    })
+  });
+});
+
 /**
  * GET /api/users/:id
  *
@@ -96,6 +129,7 @@ router.get('/:id', requireAuth, (req, res, next) => {
       })
     });
   });
+
 
 /**
  * GET /api/users/self/photos/recent

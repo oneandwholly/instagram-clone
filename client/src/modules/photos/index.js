@@ -1,5 +1,6 @@
 import * as actions from './actions';
 import reducer from './reducer';
 import * as constants from './constants';
+import * as selectors from './selectors';
 
-export default { actions, reducer, constants };
+export default { actions, reducer, constants, selectors };

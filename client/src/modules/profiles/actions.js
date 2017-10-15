@@ -1,30 +1,55 @@
-import axios from 'axios';
+//import axios from 'axios';
 import * as p from './actionTypes';
 import users from '../users';
+import photos from '../photos';
 
-export const fetchProfile = (username) => {
+export const getProfile = (username) => {
     return (dispatch, getState) => {
-        //if state.user has this username, add the user to the profiles state,
-        //else fetch User and then add it to the profiles state,
-        dispatch(getUser(username))
-            .then(() => {
-                console.log('then')
+        let profile = { userId: null, photoIds: [], pageToken: null, hasMore: false }
+
+        let userPromise = new Promise((resolve, reject) => {
+            let userId = getState().users.byUsername[username];
+            if (userId) {
+                profile.userId = userId
+                resolve();
+            } else {
+                //fetch user and add it to profile.userId
+                dispatch(users.actions.fetchUserWithUsername(username))
+                    .then(() => {
+                        profile.userId = getState().users.byUsername[username];
+                        resolve();
+                    })
+            }
+        })
+
+        userPromise.then(() => {
+            dispatch(photos.actions.fetchRecentPhotosByUserId(profile.userId))
+                .then((res) => {
+                    const photoIds = res.photos.map(photo => photo.id)
+                    dispatch({
+                        type: p.ADD_PHOTOS,
+                        payload: { photoIds, username, pageToken: photoIds[photoIds.length-1], hasMore: res.hasMore }
+                    })
+                })
+            dispatch({
+                type: p.ADD,
+                payload: { profile, username }
             });
-        //fetch Photos
+        })
+
+
     }
 }
 
-export const getUser = (username) => {
-    return (dispatch, getState) => {
-        return new Promise((resolve, reject) => {
-            const allUsersByUsername = users.selectors.selectByUsername(getState());
-            if (allUsersByUsername[username]) {
-                console.log('add profile')
-                resolve();
-            } else {
-                console.log('fetch user and then add')
-                resolve();
-            }
-        });
+export const fetchMorePhotos = (userId, pageToken, username) => {
+    return (dispatch) => {
+        dispatch(photos.actions.fetchRecentPhotosByUserId(userId, pageToken))
+            .then((res) => {
+                const photoIds = res.photos.map(photo => photo.id)
+                dispatch({
+                    type: p.ADD_PHOTOS,
+                    payload: { photoIds, username, pageToken: photoIds[photoIds.length-1], hasMore: res.hasMore }
+                })
+            })
     }
 }

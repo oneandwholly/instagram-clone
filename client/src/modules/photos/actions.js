@@ -10,6 +10,49 @@ export const addPhoto = (photo) => {
     }
 }
 
+export const addPhotos = (photos) => {
+    return (dispatch) => {
+        dispatch({
+            type: p.ADD_ARRAY,
+            payload: photos
+        })
+    }
+}
+
+
+export const fetchRecentPhotosByUserId = (userId, pageToken) => {
+    let query = `${window.location.protocol}//${window.location.host}/api/users/${userId}/photos/recent?`;
+    if (pageToken) {
+        query += `max_id=${pageToken}`;
+    }
+    return (dispatch) => {
+        const config = {
+            headers: { authorization: localStorage.getItem('token')}
+        };
+        return axios.get(query, config)
+        .then(res => {
+            const photos = res.data;
+            dispatch(addPhotos(photos));
+            return photos;
+        })
+    }
+}
+
+export const fetchMorePhotos = (userId, pageToken) => {
+    return (dispatch) => {
+        const config = {
+            headers: { authorization: localStorage.getItem('token')}
+        };
+        return axios.get(`${window.location.protocol}//${window.location.host}/api/users/${userId}/photos/recent?max_id=${pageToken}`, config)
+        .then(res => {
+            const photos = res.data;
+            dispatch(addPhotos(photos));
+            return photos;
+        })
+    }
+}
+
+
 export function postPhotos(data, cb) {
     return function(dispatch) {
         let body = new FormData(); 
