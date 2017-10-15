@@ -10,6 +10,7 @@ import { createSelector } from 'reselect';
 import FollowButton from './FollowButton';
 import { Link } from 'react-router-dom';
 import UserInfoSection from './UserInfoSection';
+import PhotoGrid from './PhotoGrid';
 
 class Profile extends Component {
     constructor(props) {
@@ -61,10 +62,8 @@ class Profile extends Component {
                 <UserInfoSection user={this.props.user}>
                     <FollowButton toggleFollow={this.props.toggleFollow} authUserId={this.props.authUserId} profileUser={this.props.user} followStatus={this.props.profile.followStatus} />
                 </UserInfoSection>
-                <div>{this.props.photos.map(photo => {
-                    return <Link key={photo.id} to={`/p/${photo.id}`}><img src={photo.image_url} alt=''/></Link>
-                })}</div>
-                <div>{this.renderMoreButton()}</div>
+                <PhotoGrid photos={this.props.photos}/>
+                <div style={{textAlign: 'center'}}>{this.renderMoreButton()}</div>
             </div>            
         );
     }
