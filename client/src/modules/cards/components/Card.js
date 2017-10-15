@@ -20,6 +20,7 @@ class Card extends Component {
     addComment(e) {
         if (e.key === 'Enter') {
             this.props.addComment(this.props.photo.id, e.target.value)
+            e.target.value = '';
         }
     }
     renderLikeButton() {
@@ -28,12 +29,15 @@ class Card extends Component {
         }
         return <button onClick={this.likePhoto.bind(this)}>like</button>
     }
+    renderDeleteCommentButton(commentUserId) {
+        if (this)
+        return <button>delete</button>;
+    }
     renderComments() {
         if (this.props.comments) {
-            console.log('comments', this.props.comments)
             return (
                 <div>{this.props.comments.map(comment => {
-                    return <div key={comment.id}><Link to={`/${comment.username}`}>{comment.username}</Link> {comment.text}</div>
+                    return <div key={comment.id}><Link to={`/${comment.username}`}>{comment.username}</Link> {comment.text} {this.renderDeleteCommentButton(comment.user_id)}</div>
                 })}</div>
             );
         }

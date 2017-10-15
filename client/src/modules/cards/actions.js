@@ -5,7 +5,7 @@ import * as c from './actionTypes';
 
 export const getCard = (photoId) => {
     return (dispatch, getState) => {
-        if (getState().photos.byId.photoId) {
+        if (getState().photos.byId[photoId]) {
             dispatch({
                 type: c.ADD_PHOTO,
                 payload: { photoId }
@@ -89,3 +89,20 @@ export const addComment = (photoId, text) => {
         })
     }
 }
+
+// export const deleteComment = (commentId) => {
+//     return (dispatch) => {
+//         const config = {
+//             headers: { authorization: localStorage.getItem('token')}
+//         };
+        
+//         axios.delete(`${window.location.protocol}//${window.location.host}/api/photos/${photoId}/comments/${commentId}`, config)
+//         .then(res => {
+//             const comment = res.data;
+//             dispatch({
+//                 type: c.ADD_COMMENT,
+//                 payload: { photoId, comment }
+//             })
+//         })
+//     }
+// }
