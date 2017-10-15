@@ -9,6 +9,7 @@ import { getProfile, fetchMorePhotos, getFollowStatus, toggleFollow } from '../a
 import { createSelector } from 'reselect';
 import FollowButton from './FollowButton';
 import { Link } from 'react-router-dom';
+import UserInfoSection from './UserInfoSection';
 
 class Profile extends Component {
     constructor(props) {
@@ -24,8 +25,10 @@ class Profile extends Component {
         }
     }
     componentWillReceiveProps(newProps) {
-        if (this.props.match.params.username !== newProps.match.params.username) {
-            this.props.getProfile(newProps.match.params.username);
+        if (!this.props.profile) {
+            if (this.props.match.params.username !== newProps.match.params.username) {
+                this.props.getProfile(newProps.match.params.username);
+            }
         }
         if (!this.state.followStatusHasBeenFetched) {
             if (newProps.authUserId) {
@@ -55,8 +58,9 @@ class Profile extends Component {
         }
         return (
             <div>
-                <div>{this.props.user.username}</div>
-                <FollowButton toggleFollow={this.props.toggleFollow} authUserId={this.props.authUserId} profileUser={this.props.user} followStatus={this.props.profile.followStatus} />
+                <UserInfoSection user={this.props.user}>
+                    <FollowButton toggleFollow={this.props.toggleFollow} authUserId={this.props.authUserId} profileUser={this.props.user} followStatus={this.props.profile.followStatus} />
+                </UserInfoSection>
                 <div>{this.props.photos.map(photo => {
                     return <Link key={photo.id} to={`/p/${photo.id}`}><img src={photo.image_url} alt=''/></Link>
                 })}</div>

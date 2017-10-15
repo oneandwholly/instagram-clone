@@ -72,6 +72,7 @@ const FixedDiv = styled.div`
     display: flex;
     justify-content: space-between;
     font-family: 'Roboto', sans-serif;
+    font-weight: 500;
     align-items: center;
     position: fixed; 
     height: inherit;
@@ -87,7 +88,7 @@ const LeftIcon = styled.img`
     `;
     
 const RightIcon = styled.img`
-    margin: 0 12px;
+    margin: 0 12px 0 6px;
     width: 40px;
     height: 34px;
 `;
