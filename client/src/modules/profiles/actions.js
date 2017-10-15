@@ -1,11 +1,11 @@
-//import axios from 'axios';
+import axios from 'axios';
 import * as p from './actionTypes';
 import users from '../users';
 import photos from '../photos';
 
 export const getProfile = (username) => {
     return (dispatch, getState) => {
-        let profile = { userId: null, photoIds: [], pageToken: null, hasMore: false }
+        let profile = { userId: null, photoIds: [], pageToken: null, hasMore: false, followStatus: false }
 
         let userPromise = new Promise((resolve, reject) => {
             let userId = getState().users.byUsername[username];
@@ -38,6 +38,42 @@ export const getProfile = (username) => {
         })
 
 
+    }
+}
+
+export const getFollowStatus = (authUserId, profileUser) => {
+    return (dispatch) => {
+        const config = {
+            headers: { authorization: localStorage.getItem('token')}
+        };
+        axios.get(`${window.location.protocol}//${window.location.host}/api/users/${profileUser.id}/relationship`, config)
+            .then((status) => {
+                let followStatus = status.data.outgoing_status === "follows" ? true : false;
+                dispatch({
+                    type: p.UPDATE_FOLLOW_STATUS,
+                    payload: { username: profileUser.username, followStatus }
+                }) 
+            })
+    }
+}
+
+export const toggleFollow = (followStatus, profileUser) => {
+    return (dispatch) => {
+        const config = {
+            headers: { authorization: localStorage.getItem('token')}
+        };
+        let action = 'unfollow';
+        if (!followStatus) {
+            action='follow';
+        }
+        axios.post(`${window.location.protocol}//${window.location.host}/api/users/${profileUser.id}/relationship?action=${action}`,null, config)
+            .then((status) => {
+                let followStatus = status.data.outgoing_status === "follows" ? true : false;
+                dispatch({
+                    type: p.UPDATE_FOLLOW_STATUS,
+                    payload: { username: profileUser.username, followStatus }
+                }) 
+            })
     }
 }
 

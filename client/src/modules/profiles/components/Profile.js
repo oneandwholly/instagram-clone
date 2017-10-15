@@ -3,12 +3,19 @@ import { connect } from 'react-redux';
 import nav from '../../nav';
 import users from '../../users';
 import photos from '../../photos';
-//import auth from '../../auth';
+import auth from '../../auth';
 import { selectAll as selectAllProfiles } from '../selectors';
-import { getProfile, fetchMorePhotos } from '../actions';
+import { getProfile, fetchMorePhotos, getFollowStatus, toggleFollow } from '../actions';
 import { createSelector } from 'reselect';
+import FollowButton from './FollowButton';
 
 class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            followStatusHasBeenFetched: false
+        }
+    }
     componentWillMount() {
         this.props.setActive('profile');
         if (!this.props.profile) {
@@ -18,6 +25,16 @@ class Profile extends Component {
     componentWillReceiveProps(newProps) {
         if (this.props.match.params.username !== newProps.match.params.username) {
             this.props.getProfile(newProps.match.params.username);
+        }
+        if (!this.state.followStatusHasBeenFetched) {
+            if (newProps.authUserId) {
+                if (newProps.user) {
+                    if (newProps.authUserId !== newProps.user.id) {
+                       this.props.getFollowStatus(newProps.authUserId, newProps.user)
+                    }
+                   this.setState({ followStatusHasBeenFetched: true })
+                }
+            }
         }
     }
 
@@ -38,6 +55,10 @@ class Profile extends Component {
         return (
             <div>
                 <div>{this.props.user.username}</div>
+                <FollowButton toggleFollow={this.props.toggleFollow} authUserId={this.props.authUserId} profileUser={this.props.user} followStatus={this.props.profile.followStatus} />
+                <div>{this.props.photos.map(photo => {
+                    return <img src={photo.image_url} key={photo.id} alt='' />
+                })}</div>
                 <div>{this.renderMoreButton()}</div>
             </div>            
         );
@@ -48,87 +69,17 @@ export default connect(createSelector(
     selectAllProfiles,
     users.selectors.selectAll,
     photos.selectors.selectById,
+    auth.selectors.selectUserId,
     (state, ownProps) => ownProps.match.params.username,
-    (allProfiles, allUsers, allPhotosById, username) => {
+    (allProfiles, allUsers, allPhotosById, authUserId, username) => {
         let profile = allProfiles[username] ? allProfiles[username] : null;
         let user = allUsers.byId[allUsers.byUsername[username]] ? allUsers.byId[allUsers.byUsername[username]] : null;
         let photos = [];
         if (profile) {
             photos = profile.photoIds.map(photo_id => allPhotosById[photo_id]);
         } 
-        return { profile, user, photos }
+        return { profile, user, photos, authUserId }
     }
-), { setActive: nav.actions.setActive, fetchMorePhotos, getProfile })(Profile);
+), { setActive: nav.actions.setActive, fetchMorePhotos, getProfile, getFollowStatus, toggleFollow })(Profile);
 
-// class Profile extends Component {
-//     componentWillMount() {
-//         this.props.setActive('profile');
-//         if (!this.props.userProfile) {
-//             console.log('should fetch profile')
-//             this.props.fetchProfile(this.props.match.params.username);
-//         }
-//     }
-//     render() {
-//         return (
-//             <div>Profile</div>
-//         );
-//     }
-// }
-
-// export default connect(createSelector(
-//     selectAllProfiles,
-//     (state, ownProps) => ownProps,
-//     (allProfiles, ownProps) => {
-//         let userProfile = null;
-
-//         if (allProfiles[ownProps.match.params.username]) {
-//             userProfile = allProfiles[ownProps.match.params.username];
-//         }
-
-//         return { userProfile };
-//     }
-// ), { setActive: nav.actions.setActive, fetchProfile })(Profile);
-
-// import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import nav from '../../nav';
-// import users from '../../users';
-// import auth from '../../auth';
-// import { createSelector } from 'reselect';
-
-// class Profile extends Component {
-//     componentWillMount() {
-//         this.props.setActive('profile');
-//         //console.log(this.props.authUser, this.props.profileUser);
-//         if (!this.props.profileUser) {
-//             console.log('should fetch profile user')
-//         }
-//     }
-//     render() {
-//         console.log('rendering')
-//         console.log(this.props.authUser, this.props.profileUser);
-//         return (
-//             <div>Profile</div>
-//         );
-//     }
-// }
-
-// export default connect(createSelector(
-//     users.selectors.selectAll,
-//     auth.selectors.selectUserId,
-//     (state, ownProps) => ownProps.match.params.username,
-//     (users, authUserId, profileUsername) => {
-//         let authUser = null;
-//         let profileUser = null;
-        
-//         if (authUserId) {
-//             authUser = users.byId[authUserId];
-//         }
-
-//         if (profileUsername) {
-//             profileUser = users.byId[users.byUsername[profileUsername]];
-//         }
-//         return { authUser, profileUser }
-//     }
-// ), { setActive: nav.actions.setActive })(Profile);
 
