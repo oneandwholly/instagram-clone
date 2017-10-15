@@ -8,6 +8,7 @@ import { selectAll as selectAllProfiles } from '../selectors';
 import { getProfile, fetchMorePhotos, getFollowStatus, toggleFollow } from '../actions';
 import { createSelector } from 'reselect';
 import FollowButton from './FollowButton';
+import { Link } from 'react-router-dom';
 
 class Profile extends Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class Profile extends Component {
                 <div>{this.props.user.username}</div>
                 <FollowButton toggleFollow={this.props.toggleFollow} authUserId={this.props.authUserId} profileUser={this.props.user} followStatus={this.props.profile.followStatus} />
                 <div>{this.props.photos.map(photo => {
-                    return <img src={photo.image_url} key={photo.id} alt='' />
+                    return <Link key={photo.id} to={`/p/${photo.id}`}><img src={photo.image_url} alt=''/></Link>
                 })}</div>
                 <div>{this.renderMoreButton()}</div>
             </div>            

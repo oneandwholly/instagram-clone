@@ -38,6 +38,20 @@ export const fetchRecentPhotosByUserId = (userId, pageToken) => {
     }
 }
 
+export const fetchPhoto = (photoId) => {
+    return (dispatch) => {
+        const config = {
+            headers: { authorization: localStorage.getItem('token')}
+        };
+        return axios.get(`${window.location.protocol}//${window.location.host}/api/photos/${photoId}`, config)
+        .then(res => {
+            const photo = res.data;
+            dispatch(addPhoto(photo));
+            return photo.id;
+        })
+    }
+}
+
 export const fetchMorePhotos = (userId, pageToken) => {
     return (dispatch) => {
         const config = {

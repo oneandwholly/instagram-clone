@@ -7,6 +7,7 @@ import nav from '../../nav';
 import create from '../../create';
 import home from '../../home';
 import profiles from '../../profiles';
+import cards from '../../cards';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import IndexRoute from './IndexRoute';
@@ -42,6 +43,7 @@ class App extends Component {
                         <Switch>
                             <Route path='/' exact component={IndexRoute} />
                             <Route path='/create/post' exact component={create.components.Create} />
+                            <Route path='/p/:id' component={cards.components.CardWrapper} />
                             <Route path='/:username' component={profiles.components.Profile} />
                         </Switch>
                     </MainContent>

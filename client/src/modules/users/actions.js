@@ -31,7 +31,7 @@ export const fetchUserWithToken = () => {
         const config = {
             headers: { authorization: token }
         };
-        return axios.get(`${window.location.protocol}//${window.location.host}/api/auth/token`, config)
+        return axios.get(`${window.location.protocol}//${window.location.host}/api/users/self`, config)
             .then((res) => {
                 const user = res.data;
                 dispatch(addUser(user));
