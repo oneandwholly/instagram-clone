@@ -25,7 +25,7 @@ export const getCard = (photoId) => {
         axios.get(`${window.location.protocol}//${window.location.host}/api/photos/${photoId}/relationship`, config)
         .then(res => {
             dispatch({
-                type: c.UPDATE_LIKE_STATUS,
+                type: c.FETCH_LIKE_STATUS,
                 payload: { photoId, likeStatus: res.data.likedByUser}
             })
         })

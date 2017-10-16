@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import nav from '../../nav';
+import auth from '../../auth';
 import { connect } from 'react-redux';
 
 class Home extends Component {
     componentWillMount() {
         this.props.setActive('home')
+    }
+
+    fetchHomeFeed() {
+        this.props.fetchHomeFeed(this.props.profile.userId, this.props.profile.pageToken, this.props.user.username)
     }
 
     render() {

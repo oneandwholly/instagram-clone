@@ -50,7 +50,7 @@ export const getFollowStatus = (authUserId, profileUser) => {
             .then((status) => {
                 let followStatus = status.data.outgoing_status === "follows" ? true : false;
                 dispatch({
-                    type: p.UPDATE_FOLLOW_STATUS,
+                    type: p.FETCH_FOLLOW_STATUS,
                     payload: { username: profileUser.username, followStatus }
                 }) 
             })

@@ -321,6 +321,176 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
   });
  });
 
+ router.get('/self/homefeed', requireAuth, (req, res, next) => {
+    console.log(req.user)
+    let user = req.user;
+    delete user.password;
+    Photo.getHomeFeed(user.id, 12, req.query.max_id, (err, entities, cursor) => {
+      if (err) {
+        next(err);
+        return;
+      }
+  
+      if (entities.length > 0) {
+        let entitiesPromises = entities.map((photo) => {
+          let photoPromise = new Promise((resolve, reject) => {
+            
+              photo.tags = [];
+              photo.comments = { count: null };
+              photo.likes = { count: null };
+              photo.user = null;
+              //tags, comment count, likes count, user info
+              Tag.getTagsByPhotoId(photo.id, (err, tags) => {
+                if (err) {
+                  reject(err);
+                  return;
+                }
+                tags.forEach((tag) => {
+                  photo.tags.push(tag.tag_name);
+                })
+          
+                Comment.getCountByPhotoId(photo.id, (err, count) => {
+                  if (err) {
+                    reject(err);
+                    return;
+                  }
+                  photo.comments.count = count.comment_count;
+                  
+                  Like.getCountByPhotoId(photo.id, (err, count) => {
+                    if (err) {
+                      reject(err);
+                      return;
+                    }
+                    photo.likes.count = count.like_count;
+                    
+                    User.read(photo.user_id, (err, user) => {
+                      if (err) {
+                        reject(err);
+                        return;
+                      }
+          
+                      delete photo.user_id;
+                      delete user.password;
+                      photo.user = user;
+                      resolve(photo);
+                    })
+                  })
+                })
+              })
+  
+          });
+  
+          return photoPromise;
+        })
+  
+        let allPromises = Promise.all(entitiesPromises).then((values) => {
+          res.json({
+            photos: values,
+            hasMore: cursor
+          });
+        }).catch((err) => {
+          next(err);
+        })
+  
+  
+        return;
+      }
+  
+      
+  
+      res.json({
+        photos: entities,
+        hasMore: cursor
+      });
+    })
+    // User.read(req.params.id, (err, user) => {
+    //   if (err) {
+    //     next(err);
+    //     return;
+    //   }
+  
+    //   delete user.password;
+    //   Photo.listByUserId(user.id, 12, req.query.max_id, (err, entities, cursor) => {
+    //     if (err) {
+    //       next(err);
+    //       return;
+    //     }
+    
+    //     if (entities.length > 0) {
+    //       let entitiesPromises = entities.map((photo) => {
+    //         let photoPromise = new Promise((resolve, reject) => {
+              
+    //             photo.tags = [];
+    //             photo.comments = { count: null };
+    //             photo.likes = { count: null };
+    //             photo.user = null;
+    //             //tags, comment count, likes count, user info
+    //             Tag.getTagsByPhotoId(photo.id, (err, tags) => {
+    //               if (err) {
+    //                 reject(err);
+    //                 return;
+    //               }
+    //               tags.forEach((tag) => {
+    //                 photo.tags.push(tag.tag_name);
+    //               })
+            
+    //               Comment.getCountByPhotoId(photo.id, (err, count) => {
+    //                 if (err) {
+    //                   reject(err);
+    //                   return;
+    //                 }
+    //                 photo.comments.count = count.comment_count;
+                    
+    //                 Like.getCountByPhotoId(photo.id, (err, count) => {
+    //                   if (err) {
+    //                     reject(err);
+    //                     return;
+    //                   }
+    //                   photo.likes.count = count.like_count;
+                      
+    //                   User.read(photo.user_id, (err, user) => {
+    //                     if (err) {
+    //                       reject(err);
+    //                       return;
+    //                     }
+            
+    //                     delete photo.user_id;
+    //                     delete user.password;
+    //                     photo.user = user;
+    //                     resolve(photo);
+    //                   })
+    //                 })
+    //               })
+    //             })
+    
+    //         });
+    
+    //         return photoPromise;
+    //       })
+    
+    //       let allPromises = Promise.all(entitiesPromises).then((values) => {
+    //         res.json({
+    //           photos: values,
+    //           hasMore: cursor
+    //         });
+    //       }).catch((err) => {
+    //         next(err);
+    //       })
+    
+    
+    //       return;
+    //     }
+    
+        
+    
+    //     res.json({
+    //       photos: entities,
+    //       hasMore: cursor
+    //     });
+    //   });
+    // });
+   });
+  
 
 /**
  * GET /api/users/self/follows

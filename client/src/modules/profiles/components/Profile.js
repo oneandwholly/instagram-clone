@@ -8,7 +8,6 @@ import { selectAll as selectAllProfiles } from '../selectors';
 import { getProfile, fetchMorePhotos, getFollowStatus, toggleFollow } from '../actions';
 import { createSelector } from 'reselect';
 import FollowButton from './FollowButton';
-import { Link } from 'react-router-dom';
 import UserInfoSection from './UserInfoSection';
 import PhotoGrid from './PhotoGrid';
 

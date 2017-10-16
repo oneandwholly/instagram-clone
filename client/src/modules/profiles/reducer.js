@@ -34,6 +34,8 @@ export default (state = initialState, action) => {
                     hasMore: action.payload.hasMore
                 }
             }
+        case p.FETCH_FOLLOW_STATUS:
+            return { ...state, [action.payload.username]: { ...state[action.payload.username], followStatus: action.payload.followStatus}}
         case p.UPDATE_FOLLOW_STATUS:
             return { ...state, [action.payload.username]: { ...state[action.payload.username], followStatus: action.payload.followStatus}}
         default:
