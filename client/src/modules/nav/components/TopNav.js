@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import auth from '../../auth';
 import users from '../../users';
+import * as actions from '../actions';
 
 import add_icon  from '../../../assets/icons/add-o.png';
 import options_icon  from '../../../assets/icons/options.png';
@@ -15,10 +16,16 @@ class TopNav extends Component {
     componentWillReceiveProps(newProps) {
         this.setState({ pathname: newProps.location.pathname })
     }
+    handleOptionsClick() {
+      this.props.hideTopNav();
+      this.props.hideBottomNav();
+      this.props.hideMain();
+      this.props.showOptions();
+    }
     renderLeft() {
         if (this.props.allUsersById && this.props.authUserId) {
             if (this.props.allUsersById[this.props.authUserId].username === this.props.location.pathname.substr(1)) {
-            return <LeftIcon src={options_icon} />
+            return <LeftIcon src={options_icon} onClick={this.handleOptionsClick.bind(this)} />
             }
         }
         return <div></div>;
@@ -44,7 +51,7 @@ class TopNav extends Component {
             return <RightIcon src={add_icon} />
             }
         }
-        return <div></div>;        
+        return <div></div>;
     }
     render() {
         if (this.props.visibility) {
@@ -74,19 +81,19 @@ const FixedDiv = styled.div`
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     align-items: center;
-    position: fixed; 
+    position: fixed;
     height: inherit;
     width: inherit;
     background-color: #fff;
     border-bottom: 1px double #e7e7e7;
     `;
-    
+
 const LeftIcon = styled.img`
     margin: 0 16px;
     width: 26px;
     height: 23px;
     `;
-    
+
 const RightIcon = styled.img`
     margin: 0 12px 0 6px;
     width: 40px;
@@ -96,11 +103,11 @@ const Logo = styled.img`
     height: 39px;
 `;
 
-export default withRouter(connect(
-    createStructuredSelector({
-        visibility: selectTopNav,
-        active: selectActive,
-        authUserId: auth.selectors.selectUserId,
-        allUsersById: users.selectors.selectById
-    })
-)(TopNav));
+
+
+export default withRouter(connect(createStructuredSelector({
+      visibility: selectTopNav,
+      active: selectActive,
+      authUserId: auth.selectors.selectUserId,
+      allUsersById: users.selectors.selectById
+  }), actions)(TopNav))

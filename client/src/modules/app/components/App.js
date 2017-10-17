@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import auth from '../../auth';
 import users from '../../users';
@@ -28,16 +28,20 @@ class App extends Component {
     renderIndexRoute() {
         if (this.props.hasToken) {
             return () => <home.components.Home />
-                
+
         }
         return () => <auth.components.LandingPage navActions={nav.actions}/>
     }
 
     render() {
-        const { MainContent, TopNav, BottomNav } = nav.components;
+        const { MainContent, TopNav, BottomNav, Options } = nav.components;
+        if (!this.props.hasToken) {
+          return <auth.components.LandingPage navActions={nav.actions}/>
+        }
         return (
             <BrowserRouter>
                 <Wrapper>
+                    <Options />
                     <TopNav />
                     <MainContent>
                         <Switch>

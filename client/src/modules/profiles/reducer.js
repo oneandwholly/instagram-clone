@@ -5,7 +5,7 @@
             photoIds: [],
             pageToken:
             followers:
-            following: 
+            following:
         }
     }
 */
@@ -27,10 +27,10 @@ export default (state = initialState, action) => {
         case p.ADD_PHOTOS:
             return {
                 ...state,
-                [action.payload.username]: { 
-                    ...state[action.payload.username], 
+                [action.payload.username]: {
+                    ...state[action.payload.username],
                     photoIds: state[action.payload.username].photoIds.concat(action.payload.photoIds),
-                    pageToken: action.payload.pageToken, 
+                    pageToken: action.payload.pageToken,
                     hasMore: action.payload.hasMore
                 }
             }
@@ -38,6 +38,8 @@ export default (state = initialState, action) => {
             return { ...state, [action.payload.username]: { ...state[action.payload.username], followStatus: action.payload.followStatus}}
         case p.UPDATE_FOLLOW_STATUS:
             return { ...state, [action.payload.username]: { ...state[action.payload.username], followStatus: action.payload.followStatus}}
+            case 'auth/LOG_OUT':
+                return initialState;
         default:
             return state;
     }

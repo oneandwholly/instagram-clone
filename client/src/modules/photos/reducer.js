@@ -29,6 +29,8 @@ export default (state = initialState, action) => {
                 return { ...state, byId: { ...state.byId, [action.payload.photoId]: { ...state.byId[action.payload.photoId], likes: { count: newLikesCount}}}}
             }
             return state;
+            case 'auth/LOG_OUT':
+                return initialState;
         default:
             return state;
     }

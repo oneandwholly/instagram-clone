@@ -16,6 +16,10 @@ export default (state = initialState, action) => {
       return { ...state, userId: action.payload };
     case a.ERROR:
       return { ...state, error: action.payload };
+    case 'auth/SET_HAS_TOKEN_TO_FALSE':
+      return { ...state, hasToken: false }
+    case 'auth/LOG_OUT':
+      return initialState;
     default:
       return state;
     }

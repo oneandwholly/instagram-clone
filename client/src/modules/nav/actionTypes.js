@@ -3,3 +3,7 @@ export const SHOW_TOP = 'nav/SHOW_TOP';
 export const HIDE_BOTTOM = 'nav/HIDE_BOTTOM';
 export const SHOW_BOTTOM = 'nav/SHOW_BOTTOM';
 export const SET_ACTIVE = 'nav/SET_ACTIVE';
+export const HIDE_MAIN = 'nav/HIDE_MAIN';
+export const SHOW_MAIN = 'nav/SHOW_MAIN';
+export const HIDE_OPTIONS = 'nav/HIDE_OPTIONS';
+export const SHOW_OPTIONS = 'nav/SHOW_OPTIONS';

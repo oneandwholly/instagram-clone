@@ -27,6 +27,8 @@ export default (state = initialState, action) => {
             newByUsername = { ...state.byUsername, [newUser.username]: newUser.id };
             newState = { ...state, byId: newById, byUsername: newByUsername };
             return newState;
+            case 'auth/LOG_OUT':
+                return initialState;
         default:
             return state;
     }

@@ -13,6 +13,14 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch(action.type) {
+      case n.HIDE_OPTIONS:
+          return { ...state, visibility: { ...state.visibility, options: false }};
+      case n.SHOW_OPTIONS:
+          return { ...state, visibility: { ...state.visibility, options: true }};
+      case n.HIDE_MAIN:
+          return { ...state, visibility: { ...state.visibility, mainContent: false }};
+      case n.SHOW_MAIN:
+          return { ...state, visibility: { ...state.visibility, mainContent: true }};
         case n.HIDE_TOP:
             return { ...state, visibility: { ...state.visibility, topNav: false }};
         case n.SHOW_TOP:
@@ -23,6 +31,8 @@ export default (state = initialState, action) => {
             return { ...state, visibility: { ...state.visibility, bottomNav: true }};
         case n.SET_ACTIVE:
             return { ...state, active: action.payload };
+        case 'auth/LOG_OUT':
+            return initialState;
         default:
             return state;
     }
