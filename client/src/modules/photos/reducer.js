@@ -12,6 +12,11 @@ export default (state = initialState, action) => {
             newById = { ...state.byId, [action.payload.id]: action.payload };
             newState = { ...state, byId: newById };
             return newState;
+        case 'photos/DELETE':
+            newById = { ...state.byId };
+            delete newById[action.payload.photoId]
+            newState = { ...state, byId: newById };
+            return newState;
         case p.ADD_ARRAY:
             newById = { ...state.byId };
             action.payload.photos.forEach(photo => {

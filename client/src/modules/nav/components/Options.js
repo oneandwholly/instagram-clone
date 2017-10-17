@@ -5,16 +5,12 @@ import * as actions from '../actions'
 import { createStructuredSelector } from 'reselect'
 import { Redirect, withRouter } from 'react-router-dom';
 class Options extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {redirect: false};
-  }
 
   handleLogout() {
-    this.setState({redirect: true})
     localStorage.removeItem('token');
     this.props.logout();
     this.props.setHasTokenToFalse();
+    this.props.history.push('/')
   }
 
   handleBackClick() {
@@ -25,9 +21,6 @@ class Options extends Component {
   }
 
     render() {
-      if (this.state.redirect) {
-        return <Redirect to='/' />
-      }
       if (this.props.visibility) {
         return (
           <div>
@@ -40,6 +33,6 @@ class Options extends Component {
     }
 }
 
-export default connect(createStructuredSelector({
+export default withRouter(connect(createStructuredSelector({
       visibility: selectOptions,
-  }), actions)(Options)
+  }), actions)(Options))

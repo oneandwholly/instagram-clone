@@ -7,3 +7,5 @@ export const HIDE_MAIN = 'nav/HIDE_MAIN';
 export const SHOW_MAIN = 'nav/SHOW_MAIN';
 export const HIDE_OPTIONS = 'nav/HIDE_OPTIONS';
 export const SHOW_OPTIONS = 'nav/SHOW_OPTIONS';
+export const HIDE_MORE = 'nav/HIDE_MORE';
+export const SHOW_MORE = 'nav/SHOW_MORE';

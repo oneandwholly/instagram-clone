@@ -1,4 +1,21 @@
 import * as n from './actionTypes';
+import axios from 'axios';
+
+export const deletePhoto = (photoId, username) => {
+  return dispatch => {
+    dispatch({
+      type: 'photos/DELETE',
+      payload: { photoId, username }
+    })
+    const config = {
+        headers: { authorization: localStorage.getItem('token')}
+    };
+    axios.delete(`${window.location.protocol}//${window.location.host}/api/photos/${photoId}`, config)
+        .then((res) => {
+            console.log(res)
+        })
+  }
+}
 
 export const setHasTokenToFalse = () => {
   return dispatch => {
@@ -21,6 +38,23 @@ export const setActive = (name) => {
         dispatch({
             type: n.SET_ACTIVE,
             payload: name
+        })
+    }
+}
+
+export const hideMore = () => {
+    return (dispatch) => {
+        dispatch({
+            type: n.HIDE_MORE
+        })
+    }
+}
+
+export const showMore = (photoId, username) => {
+    return (dispatch) => {
+        dispatch({
+            type: n.SHOW_MORE,
+            payload: { photoId, username }
         })
     }
 }

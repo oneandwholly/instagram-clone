@@ -6,6 +6,9 @@ import { likePhoto, unlikePhoto, addComment } from '../actions';
 import like_icon from '../../../assets/icons/heart-o.png';
 import liked_icon from '../../../assets/icons/liked.png';
 import comment_icon from '../../../assets/icons/comment-o.png';
+import more_icon from '../../../assets/icons/more.png';
+
+import nav from '../../nav'
 class Card extends Component {
   constructor(props){
     super(props);
@@ -17,15 +20,20 @@ class Card extends Component {
         this.setState({display: 'block'})
         setTimeout(() =>{this.nameInput.focus()}, 0)
     }
+    showMore() {
+      this.props.showMore(this.props.photo.id, this.props.photo.user.username)
+    }
     renderTopBar() {
         if (this.props.photo) {
-        return <div style={{display: 'flex', padding: '15px 40px 11px 16px'}}>
+        return <div style={{display:'flex', justifyContent: 'space-between', alignItems: 'center'}}><div style={{display: 'flex', padding: '15px 40px 11px 16px'}}>
            <Link to={`/${this.props.photo.user.username}`}><ProfilePicture src='https://scontent-bom1-1.cdninstagram.com/t51.2885-19/11906329_960233084022564_1448528159_a.jpg'/></Link>
            <div style={{marginTop: '7px'}}><Link style={{textDecoration: 'none',
                 fontFamily: 'Roboto',
                 fontWeight: 500,
                 fontSize: '15px',
                 color: 'black'}} to={`/${this.props.photo.user.username}`}>{this.props.photo.user.username}</Link></div>
+        </div>
+        <img style ={{ height: '15px', paddingRight: '16px'}} alt='' onClick={this.showMore.bind(this)} src={more_icon} />
         </div>
         }
         return <div></div>
@@ -132,4 +140,4 @@ export default connect((state, ownProps) => {
     }
 
     return { photo, comments, likeStatus };
-}, { likePhoto, unlikePhoto, addComment })(Card);
+}, { likePhoto, unlikePhoto, addComment, showMore: nav.actions.showMore })(Card);

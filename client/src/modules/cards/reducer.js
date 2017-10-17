@@ -8,6 +8,9 @@ export default (state = initialState, action) => {
   switch(action.type) {
     case c.ADD_PHOTO:
         return {...state, [action.payload.photoId]: { ...state[action.payload.photoId], photoId: action.payload.photoId } }
+    // case 'photos/DELETE':
+    //     return {...state, [action.payload]: null }
+
     case c.ADD_COMMENTS:
         return {...state, [action.payload.photoId]: { ...state[action.payload.photoId], comments: action.payload.comments } }
     case c.FETCH_LIKE_STATUS:

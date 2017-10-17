@@ -29,8 +29,8 @@ export const getCard = (photoId) => {
                 payload: { photoId, likeStatus: res.data.likedByUser}
             })
         })
-        
-        dispatch(comments.actions.fetchComments(photoId))
+
+        return dispatch(comments.actions.fetchComments(photoId))
             .then((comments) => {
                 dispatch({
                     type: c.ADD_COMMENTS,
@@ -95,7 +95,7 @@ export const addComment = (photoId, text) => {
 //         const config = {
 //             headers: { authorization: localStorage.getItem('token')}
 //         };
-        
+
 //         axios.delete(`${window.location.protocol}//${window.location.host}/api/photos/${photoId}/comments/${commentId}`, config)
 //         .then(res => {
 //             const comment = res.data;

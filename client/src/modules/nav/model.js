@@ -18,4 +18,10 @@ export const getMainProp = visibility => visibility.mainContent;
 
 export const getOptionsProp = visibility => visibility.options;
 
+export const getMoreProp = visibility => visibility.more;
+
+export const getMorePhotoIdProp = nav => nav.morePhotoId;
+
+export const getMoreUsernameProp = nav => nav.moreUsername;
+
 export const getActiveProp = nav => nav.active;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import auth from '../../auth';
 import users from '../../users';
@@ -34,7 +34,7 @@ class App extends Component {
     }
 
     render() {
-        const { MainContent, TopNav, BottomNav, Options } = nav.components;
+        const { MainContent, TopNav, BottomNav, Options, More } = nav.components;
         if (!this.props.hasToken) {
           return <auth.components.LandingPage navActions={nav.actions}/>
         }
@@ -52,6 +52,7 @@ class App extends Component {
                         </Switch>
                     </MainContent>
                     <BottomNav />
+                    <More />
                 </Wrapper>
             </BrowserRouter>
         );

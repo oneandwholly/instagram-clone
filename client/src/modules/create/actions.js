@@ -20,7 +20,7 @@ export function postPhotos(data, cb) {
         };
         return axios.post(`${window.location.protocol}//${window.location.host}/api/photos`, body, config)
         .then(res => {
-          console.log(res)
+          console.log('inherer')
           cb();
         })
     }

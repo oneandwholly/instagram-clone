@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as p from './actionTypes';
+import cards from '../cards';
 
 export const addPhoto = (photo) => {
     return (dispatch) => {
@@ -85,6 +86,12 @@ export function postPhotos(data, cb) {
         .then(res => {
             const photo = res.data;
             dispatch(addPhoto(photo));
+            dispatch(cards.actions.getCard(photo.id)).then(() => {
+              dispatch({
+                type: 'home/ADD',
+                payload: photo.id
+              })
+            })
             cb();
         })
     }

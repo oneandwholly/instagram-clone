@@ -1,7 +1,7 @@
 //import { createSelector } from 'reselect';
 import _ from 'lodash';
 import { NAME } from './constants';
-import { getVisibilityProp, getTopNavProp, getBottomNavProp, getActiveProp, getMainProp, getOptionsProp } from './model';
+import { getVisibilityProp, getTopNavProp, getBottomNavProp, getActiveProp, getMainProp, getOptionsProp, getMoreProp, getMorePhotoIdProp, getMoreUsernameProp} from './model';
 
 export const selectAll = state => state[NAME];
 
@@ -15,7 +15,13 @@ export const selectMain = _.flow(selectAll, getVisibilityProp, getMainProp);
 
 export const selectOptions = _.flow(selectAll, getVisibilityProp, getOptionsProp);
 
+export const selectMore = _.flow(selectAll, getVisibilityProp, getMoreProp);
+
 export const selectActive = _.flow(selectAll, getActiveProp);
+
+export const selectMorePhotoId = _.flow(selectAll, getMorePhotoIdProp);
+
+export const selectMoreUsername = _.flow(selectAll, getMoreUsernameProp);
 
 // export const getCompleted = _.compose(filterCompleted, getAll);
 //
