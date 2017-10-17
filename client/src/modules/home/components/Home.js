@@ -1,147 +1,34 @@
 import React, { Component } from 'react';
 import nav from '../../nav';
+import cards from '../../cards';
 import auth from '../../auth';
 import { connect } from 'react-redux';
+import { fetchHomeFeed } from '../actions';
 
 class Home extends Component {
     componentWillMount() {
         this.props.setActive('home')
+        if (this.props.cardIds.length===0) {
+          this.props.fetchHomeFeed();
+        }
     }
 
     fetchHomeFeed() {
-        this.props.fetchHomeFeed(this.props.profile.userId, this.props.profile.pageToken, this.props.user.username)
+        this.props.fetchHomeFeed()
     }
 
     render() {
+      console.log(this.props.cardIds)
         return (
             <div>
-            Start
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home<br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>                    
-            <br></br>
-            Home
-            <br></br>
-            End
+            {this.props.cardIds.map(cardId => {
+              return <cards.components.Card key={cardId+'home'} photoId={this.props.cards[cardId].photoId} likeStatus={this.props.cards[cardId].likeStatus} comments={this.props.cards[cardId].comments}/>
+            })}
         </div>
         );
     }
 }
 
-export default connect(null, {setActive: nav.actions.setActive})(Home);
+export default connect((state, ownProps) => {
+  return { cards: state.cards, cardIds: state.home.cards }
+}, {setActive: nav.actions.setActive, fetchHomeFeed})(Home);

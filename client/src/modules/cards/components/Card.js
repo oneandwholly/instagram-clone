@@ -7,8 +7,15 @@ import like_icon from '../../../assets/icons/heart-o.png';
 import liked_icon from '../../../assets/icons/liked.png';
 import comment_icon from '../../../assets/icons/comment-o.png';
 class Card extends Component {
+  constructor(props){
+    super(props);
+    this.state ={
+      display: 'none'
+    }
+  }
     focusOnNewCommentInput(){
-        this.nameInput.focus(); 
+        this.setState({display: 'block'})
+        setTimeout(() =>{this.nameInput.focus()}, 0)
     }
     renderTopBar() {
         if (this.props.photo) {
@@ -82,16 +89,16 @@ class Card extends Component {
                     <div>{this.renderNumOfLikes()}</div>
                     <div>{this.renderComments()}</div>
                     <div>
-                        <input 
-                            style={{width: '100%', border: '0px solid', borderBottom: '1px solid #eee'}} 
+                        <input
+                            style={{width: '100%', border: '0px solid', borderBottom: '1px solid #eee', display: this.state.display}}
                             onKeyPress={this.addComment.bind(this)}
-                            ref={(input) => { this.nameInput = input; }} 
+                            ref={(input) => { this.nameInput = input; }}
                         >
                         </input>
                     </div>
                 </div>
-
-            </div>            
+                <br></br>
+            </div>
         )
     }
 }

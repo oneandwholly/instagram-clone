@@ -19,7 +19,7 @@ const connection = mysql.createConnection(options);
 function getHomeFeed (user_id, limit, max_id, cb) {
   max_id = max_id ? parseInt(max_id, 10) : 2147483648;
   connection.query(
-    `SELECT * FROM users INNER JOIN photos ON users.id=photos.user_id WHERE photos.id < ${max_id} AND (users.id IN (SELECT followee_id FROM follows WHERE follower_id=${user_id}) OR users.id=${user_id}) ORDER BY photos.created_time DESC LIMIT ${limit}`,
+    `SELECT photos.id, photos.image_url, photos.caption, photos.created_time FROM users INNER JOIN photos ON users.id=photos.user_id WHERE photos.id < ${max_id} AND (users.id IN (SELECT followee_id FROM follows WHERE follower_id=${user_id}) OR users.id=${user_id}) ORDER BY photos.created_time DESC LIMIT ${limit}`,
     (err, results) => {
       if (err) {
         cb(err);
@@ -48,8 +48,8 @@ function listByUserId (user_id, limit, max_id, cb) {
 
 function getCountByUserId (user_id, cb) {
   connection.query(
-    'SELECT COUNT(*) AS photo_count FROM `photos` where `user_id` = ?', 
-    user_id, 
+    'SELECT COUNT(*) AS photo_count FROM `photos` where `user_id` = ?',
+    user_id,
     (err, results) => {
       if (err) {
         cb(err);

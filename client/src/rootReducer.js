@@ -7,6 +7,7 @@ import nav from './modules/nav';
 import photos from './modules/photos';
 import profiles from './modules/profiles';
 import cards from './modules/cards';
+import home from './modules/home';
 
 const rootReducer = combineReducers({
     [auth.constants.NAME]: auth.reducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     [photos.constants.NAME]: photos.reducer,
     [profiles.constants.NAME]: profiles.reducer,
     [cards.constants.NAME]: cards.reducer,
+    [home.constants.NAME]: home.reducer,
     [form.constants.NAME]: form.reducer
 });
 

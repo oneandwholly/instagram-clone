@@ -53,7 +53,7 @@ router.get('/self', requireAuth, (req, res, next) => {
 
       self.counts.follows = counts.follows_count;
       self.counts.followed_by = counts.followed_by_count;
-  
+
       res.json(self);
     })
   })
@@ -76,16 +76,16 @@ router.get('/username/:username', requireAuth, (req, res, next) => {
         return;
       }
       user.counts.photos = count.photo_count;
-  
+
       Follow.getBothCountsByUserId(user.id, (err, counts) => {
         if (err) {
           next(err);
           return;
         }
-  
+
         user.counts.follows = counts.follows_count;
         user.counts.followed_by = counts.followed_by_count;
-    
+
         res.json(user);
       })
     })
@@ -114,16 +114,16 @@ router.get('/:id', requireAuth, (req, res, next) => {
           return;
         }
         user.counts.photos = count.photo_count;
-    
+
         Follow.getBothCountsByUserId(user.id, (err, counts) => {
           if (err) {
             next(err);
             return;
           }
-    
+
           user.counts.follows = counts.follows_count;
           user.counts.followed_by = counts.followed_by_count;
-      
+
           res.json(user);
         })
       })
@@ -135,7 +135,7 @@ router.get('/:id', requireAuth, (req, res, next) => {
  * GET /api/users/self/photos/recent
  *
  * Get the most recent photos of the user.
- * 
+ *
  * req.query.max_id: return photos earlier than this max_id.
  */
 
@@ -152,7 +152,7 @@ router.get('/:id', requireAuth, (req, res, next) => {
     if (entities.length > 0) {
       let entitiesPromises = entities.map((photo) => {
         let photoPromise = new Promise((resolve, reject) => {
-          
+
             photo.tags = [];
             photo.comments = { count: null };
             photo.likes = { count: null };
@@ -166,27 +166,27 @@ router.get('/:id', requireAuth, (req, res, next) => {
               tags.forEach((tag) => {
                 photo.tags.push(tag.tag_name);
               })
-        
+
               Comment.getCountByPhotoId(photo.id, (err, count) => {
                 if (err) {
                   reject(err);
                   return;
                 }
                 photo.comments.count = count.comment_count;
-                
+
                 Like.getCountByPhotoId(photo.id, (err, count) => {
                   if (err) {
                     reject(err);
                     return;
                   }
                   photo.likes.count = count.like_count;
-                  
+
                   User.read(photo.user_id, (err, user) => {
                     if (err) {
                       reject(err);
                       return;
                     }
-        
+
                     delete photo.user_id;
                     delete user.password;
                     photo.user = user;
@@ -214,7 +214,7 @@ router.get('/:id', requireAuth, (req, res, next) => {
       return;
     }
 
-    
+
 
     res.json({
       photos: entities,
@@ -228,7 +228,7 @@ router.get('/:id', requireAuth, (req, res, next) => {
  * GET /api/users/:id/photos/recent
  *
  * Get the most recent photos of a user.
- * 
+ *
  * req.query.max_id: return photos earlier than this max_id.
  */
 router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
@@ -245,11 +245,11 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
         next(err);
         return;
       }
-  
+
       if (entities.length > 0) {
         let entitiesPromises = entities.map((photo) => {
           let photoPromise = new Promise((resolve, reject) => {
-            
+
               photo.tags = [];
               photo.comments = { count: null };
               photo.likes = { count: null };
@@ -263,27 +263,27 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
                 tags.forEach((tag) => {
                   photo.tags.push(tag.tag_name);
                 })
-          
+
                 Comment.getCountByPhotoId(photo.id, (err, count) => {
                   if (err) {
                     reject(err);
                     return;
                   }
                   photo.comments.count = count.comment_count;
-                  
+
                   Like.getCountByPhotoId(photo.id, (err, count) => {
                     if (err) {
                       reject(err);
                       return;
                     }
                     photo.likes.count = count.like_count;
-                    
+
                     User.read(photo.user_id, (err, user) => {
                       if (err) {
                         reject(err);
                         return;
                       }
-          
+
                       delete photo.user_id;
                       delete user.password;
                       photo.user = user;
@@ -292,12 +292,12 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
                   })
                 })
               })
-  
+
           });
-  
+
           return photoPromise;
         })
-  
+
         let allPromises = Promise.all(entitiesPromises).then((values) => {
           res.json({
             photos: values,
@@ -306,13 +306,13 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
         }).catch((err) => {
           next(err);
         })
-  
-  
+
+
         return;
       }
-  
-      
-  
+
+
+
       res.json({
         photos: entities,
         hasMore: cursor
@@ -322,19 +322,19 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
  });
 
  router.get('/self/homefeed', requireAuth, (req, res, next) => {
-    console.log(req.user)
     let user = req.user;
     delete user.password;
+    console.log(user)
     Photo.getHomeFeed(user.id, 12, req.query.max_id, (err, entities, cursor) => {
       if (err) {
         next(err);
         return;
       }
-  
+
       if (entities.length > 0) {
         let entitiesPromises = entities.map((photo) => {
           let photoPromise = new Promise((resolve, reject) => {
-            
+
               photo.tags = [];
               photo.comments = { count: null };
               photo.likes = { count: null };
@@ -348,41 +348,43 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
                 tags.forEach((tag) => {
                   photo.tags.push(tag.tag_name);
                 })
-          
+
                 Comment.getCountByPhotoId(photo.id, (err, count) => {
                   if (err) {
                     reject(err);
                     return;
                   }
                   photo.comments.count = count.comment_count;
-                  
+
                   Like.getCountByPhotoId(photo.id, (err, count) => {
                     if (err) {
                       reject(err);
                       return;
                     }
                     photo.likes.count = count.like_count;
-                    
-                    User.read(photo.user_id, (err, user) => {
-                      if (err) {
-                        reject(err);
-                        return;
-                      }
-          
-                      delete photo.user_id;
-                      delete user.password;
-                      photo.user = user;
-                      resolve(photo);
-                    })
+
+                    // User.read(photo.user_id, (err, user) => {
+                    //   if (err) {
+                    //     reject(err);
+                    //     return;
+                    //   }
+                    //
+                    //   delete photo.user_id;
+                    //   delete user.password;
+                    //   photo.user = user;
+                    //   resolve(photo);
+                    // })
+                    photo.user = user;
+                    resolve(photo)
                   })
                 })
               })
-  
+
           });
-  
+
           return photoPromise;
         })
-  
+
         let allPromises = Promise.all(entitiesPromises).then((values) => {
           res.json({
             photos: values,
@@ -391,13 +393,13 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
         }).catch((err) => {
           next(err);
         })
-  
-  
+
+
         return;
       }
-  
-      
-  
+
+
+
       res.json({
         photos: entities,
         hasMore: cursor
@@ -408,18 +410,18 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
     //     next(err);
     //     return;
     //   }
-  
+
     //   delete user.password;
     //   Photo.listByUserId(user.id, 12, req.query.max_id, (err, entities, cursor) => {
     //     if (err) {
     //       next(err);
     //       return;
     //     }
-    
+
     //     if (entities.length > 0) {
     //       let entitiesPromises = entities.map((photo) => {
     //         let photoPromise = new Promise((resolve, reject) => {
-              
+
     //             photo.tags = [];
     //             photo.comments = { count: null };
     //             photo.likes = { count: null };
@@ -433,27 +435,27 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
     //               tags.forEach((tag) => {
     //                 photo.tags.push(tag.tag_name);
     //               })
-            
+
     //               Comment.getCountByPhotoId(photo.id, (err, count) => {
     //                 if (err) {
     //                   reject(err);
     //                   return;
     //                 }
     //                 photo.comments.count = count.comment_count;
-                    
+
     //                 Like.getCountByPhotoId(photo.id, (err, count) => {
     //                   if (err) {
     //                     reject(err);
     //                     return;
     //                   }
     //                   photo.likes.count = count.like_count;
-                      
+
     //                   User.read(photo.user_id, (err, user) => {
     //                     if (err) {
     //                       reject(err);
     //                       return;
     //                     }
-            
+
     //                     delete photo.user_id;
     //                     delete user.password;
     //                     photo.user = user;
@@ -462,12 +464,12 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
     //                 })
     //               })
     //             })
-    
+
     //         });
-    
+
     //         return photoPromise;
     //       })
-    
+
     //       let allPromises = Promise.all(entitiesPromises).then((values) => {
     //         res.json({
     //           photos: values,
@@ -476,13 +478,13 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
     //       }).catch((err) => {
     //         next(err);
     //       })
-    
-    
+
+
     //       return;
     //     }
-    
-        
-    
+
+
+
     //     res.json({
     //       photos: entities,
     //       hasMore: cursor
@@ -490,13 +492,13 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
     //   });
     // });
    });
-  
+
 
 /**
  * GET /api/users/self/follows
  *
  * Get the list of users this user follows.
- * 
+ *
  * req.query.max_id: return rows earlier than this max_id.
  */
 router.get('/self/follows', requireAuth, (req, res, next) => {
@@ -514,7 +516,7 @@ router.get('/self/follows', requireAuth, (req, res, next) => {
  * GET /api/users/self/followed_by
  *
  * Get the list of users this user is followed by.
- * 
+ *
  * req.query.max_id: return rows earlier than this max_id.
  */
 router.get('/self/followed_by', requireAuth, (req, res, next) => {
@@ -531,7 +533,7 @@ router.get('/self/followed_by', requireAuth, (req, res, next) => {
 router.get('/:id/relationship', requireAuth, (req, res, next) => {
   let self_id = req.user.id;
   let user_id = req.params.id;
-  
+
   Follow.read(self_id, user_id, (err, follow) => {
     // outgoing_status: Your relationship to the user. Can be 'follows', 'none'.
     let outgoing_status = 'none';
@@ -589,5 +591,5 @@ router.use((err, req, res, next) => {
     };
     next(err);
   });
-  
+
   module.exports = router;

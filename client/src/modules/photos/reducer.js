@@ -26,10 +26,10 @@ export default (state = initialState, action) => {
                 } else {
                     newLikesCount-=1;
                 }
-                return { ...state, byId: { ...state.byId, [action.payload.photoId]: { ...state.byId[action.payload.photoId], likes: { count: newLikesCount}}}} 
+                return { ...state, byId: { ...state.byId, [action.payload.photoId]: { ...state.byId[action.payload.photoId], likes: { count: newLikesCount}}}}
             }
             return state;
         default:
-            return state; 
+            return state;
     }
 }
