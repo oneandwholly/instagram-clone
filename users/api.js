@@ -363,19 +363,17 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
                     }
                     photo.likes.count = count.like_count;
 
-                    // User.read(photo.user_id, (err, user) => {
-                    //   if (err) {
-                    //     reject(err);
-                    //     return;
-                    //   }
-                    //
-                    //   delete photo.user_id;
-                    //   delete user.password;
-                    //   photo.user = user;
-                    //   resolve(photo);
-                    // })
-                    photo.user = user;
-                    resolve(photo)
+                    User.read(photo.user_id, (err, user) => {
+                      if (err) {
+                        reject(err);
+                        return;
+                      }
+
+                      delete photo.user_id;
+                      delete user.password;
+                      photo.user = user;
+                      resolve(photo);
+                    })
                   })
                 })
               })

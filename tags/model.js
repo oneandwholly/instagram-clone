@@ -26,6 +26,42 @@ function getTagsByPhotoId (photo_id, cb) {
         });
 }
 
+function create (tag_name, cb) {
+  connection.query(
+      `INSERT IGNORE INTO tags (tag_name) VALUES ('${tag_name}');`, (err, results) => {
+        if (err) {
+          cb(err);
+          return;
+        }
+        cb(null, results);
+      });
+}
+
+function getTagId (tag_name, cb) {
+  connection.query(
+      `SELECT id from tags where tag_name = '${tag_name}';`, (err, results) => {
+        if (err) {
+          cb(err);
+          return;
+        }
+        cb(null, results[0]);
+      });
+}
+
+function create_photos_tags (photo_id, tag_id, cb) {
+  connection.query(
+      `INSERT INTO photos_tags (photo_id, tag_id) VALUES (${photo_id}, ${tag_id});`, (err, results) => {
+        if (err) {
+          cb(err);
+          return;
+        }
+        cb(null, results);
+      });
+}
+
 module.exports = {
+  create,
+  create_photos_tags,
+  getTagId,
     getTagsByPhotoId
   };

@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import nav from '../../nav';
 import photos from '../../photos';
+import home from '../../home';
+import cards from '../../cards';
+import styled from 'styled-components';
 
 const FILE_FIELD_NAME = 'files';
 
@@ -33,9 +36,9 @@ const renderDropzoneInput = (field) => {
 class Create extends Component {
     constructor(props) {
         super(props);
-        this.state = { redirect: false };
+        this.state = { redirect: false, caption: '' };
     }
-    
+
     componentWillMount() {
         this.props.setActive('create')
     }
@@ -63,8 +66,8 @@ class Create extends Component {
             name={FILE_FIELD_NAME}
             component={renderDropzoneInput}
           />
-          <label>caption:</label>
-          <Field name="caption" component="textarea" type="text" />
+          <label></label>
+          <StyledField name="caption" component="textarea" type="text" />
         </div>
         <div>
           <button type="submit">
@@ -78,6 +81,13 @@ class Create extends Component {
     );
   }
 }
+
+const StyledField = styled(Field)`
+  width: 100%;
+  height: 100px;
+  color: blue;
+  resize: none;
+`;
 
 const form = reduxForm({
   form: 'simple',

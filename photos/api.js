@@ -31,13 +31,13 @@ router.post(
     images.sendUploadToGCS,
     (req, res, next) => {
       let data = req.body;
-  
+
       // Was an image uploaded? If so, we'll use its public URL
       // in cloud storage.
       if (req.file && req.file.cloudStoragePublicUrl) {
         data.image_url = req.file.cloudStoragePublicUrl;
       }
-  
+
       // Save the data to the database.
       Photo.create(data, (err, savedData) => {
         if (err) {
@@ -45,6 +45,39 @@ router.post(
           return;
         }
         res.json(savedData);
+        const parseTags = text => {
+          let tags = [];
+          let flag = false;
+          let tag = '';
+          for (let i=0; i<text.length; i++) {
+            if (text[i] === '#') {
+              flag = true;
+            }
+
+            if ((text[i+1] === ' ' || text[i+1] === ',' || i === text.length-1) && flag) {
+              tag += text[i];
+              tags.push(tag.substr(1))
+              tag = '';
+              flag = false;
+            }
+
+            if (flag) {
+              tag += text[i]
+            }
+          }
+
+          return tags;
+        }
+
+        parseTags(data.caption).forEach(tag => {
+          Tag.create(tag, (err, res) => {
+            Tag.getTagId(tag, (err, res) => {
+              Tag.create_photos_tags(savedData.id, res.id, (err, res => {
+                console.log(res)
+              }))
+            })
+          });
+        })
       });
     }
   );
@@ -77,27 +110,27 @@ router.get('/:id', requireAuth, (req, res, next) => {
         tags.forEach((tag) => {
           photo.tags.push(tag.tag_name);
         })
-  
+
         Comment.getCountByPhotoId(photo.id, (err, count) => {
           if (err) {
             reject(err);
             return;
           }
           photo.comments.count = count.comment_count;
-          
+
           Like.getCountByPhotoId(photo.id, (err, count) => {
             if (err) {
               reject(err);
               return;
             }
             photo.likes.count = count.like_count;
-            
+
             User.read(photo.user_id, (err, user) => {
               if (err) {
                 reject(err);
                 return;
               }
-  
+
               delete photo.user_id;
               delete user.password;
               photo.user = user;
@@ -106,7 +139,7 @@ router.get('/:id', requireAuth, (req, res, next) => {
           })
         })
       })
-      
+
     })
   });
 
@@ -194,7 +227,7 @@ router.get('/:photo_id/relationship', requireAuth, (req, res, next) => {
 
 /**
  * GET /api/photos
- * 
+ *
  * query: username
  *
  * Fetch an array of photos by username (up to ten at a time).
@@ -224,5 +257,5 @@ router.use((err, req, res, next) => {
     };
     next(err);
   });
-  
+
   module.exports = router;
