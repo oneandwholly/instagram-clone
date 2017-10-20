@@ -7,10 +7,6 @@ class SearchInput extends Component {
     
         this.state = { term: "" };
     }
-    
-    render() {
-
-    }
 
     render() {
         return (

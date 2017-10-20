@@ -109,8 +109,6 @@ const StyledSearch = styled(Search)`
 
 `;
 
-const Input = styled.input`
-`;
 
 const TabList = styled.div`
     display: flex;
@@ -133,8 +131,6 @@ const Tab = styled.div`
 const SearchResultList = styled.div`
 `;
 
-const Item = styled.div`
-`;
 
 const Picture = styled.img`
     border-radius: 50%;

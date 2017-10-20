@@ -126,7 +126,7 @@ router.post(
         parseTags(data.caption).forEach(tag => {
           Tag.create(tag, (err, res) => {
             Tag.getTagId(tag, (err, res) => {
-              Tag.create_photos_tags(savedData.id, res.id, (err, res => {
+              Tag.create_photos_tags(photo.id, res.id, (err, res => {
               }))
             })
           });

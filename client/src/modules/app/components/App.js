@@ -50,6 +50,7 @@ class App extends Component {
                             <Route path='/explore' exact component={search.components.Search} />
                             <Route path='/activity' exact component={search.components.Activity} />
                             <Route path='/create/post' exact component={create.components.Create} />
+                            <Route path='/explore/tags/:tag_name' component={search.components.TagSearchResult} />
                             <Route path='/p/:id' component={cards.components.CardWrapper} />
                             <Route path='/:username' component={profiles.components.Profile} />
                         </Switch>

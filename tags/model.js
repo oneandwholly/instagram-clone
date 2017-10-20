@@ -70,10 +70,29 @@ function create_photos_tags (photo_id, tag_id, cb) {
       });
 }
 
+function getPhotosFromTagName (tag_name, cb) {
+  connection.query(
+    `SELECT photos.id, photos.image_url, photos.caption, photos.user_id, photos.created_time
+    FROM tags
+        INNER JOIN photos_tags
+            ON photos_tags.tag_id = tags.id
+        INNER JOIN photos
+            ON photos.id = photos_tags.photo_id
+    WHERE tags.tag_name = '${tag_name}'`, (err, results) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      cb(null, results)
+    }
+  )
+}
+
 module.exports = {
   match,
   create,
   create_photos_tags,
+  getPhotosFromTagName,
   getTagId,
     getTagsByPhotoId
   };

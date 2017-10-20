@@ -22,6 +22,17 @@ router.get('/search', requireAuth, (req, res, next) => {
       })
   })
 
+router.get('/:tag_name', requireAuth, (req, res, next) => {
+  Tag.getPhotosFromTagName(req.params.tag_name, (err, photos) => {
+    if (err) {
+      next(err);
+      return;
+    }
+
+    res.json(photos)
+  })
+})
+
 /**
  * Errors on "/api/photos/*" routes.
  */
