@@ -18,7 +18,6 @@ export default (state = initialState, action) => {
         return { cards: newArray }
       }
       return state;
-      break;
     case 'auth/LOG_OUT':
       return initialState;
     default:

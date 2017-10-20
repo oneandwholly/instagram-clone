@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import nav from '../../nav';
 import photos from '../../photos';
-import home from '../../home';
-import cards from '../../cards';
 import styled from 'styled-components';
 import plus_icon from '../../../assets/icons/plus.png';
 import core from '../../core';
@@ -55,8 +53,7 @@ class Create extends Component {
 
   render() {
     const {
-      handleSubmit,
-      reset,
+      handleSubmit
     } = this.props;
     if (this.state.redirect) {
       return <Redirect to='/' />

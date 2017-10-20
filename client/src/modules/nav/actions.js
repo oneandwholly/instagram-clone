@@ -12,7 +12,6 @@ export const deletePhoto = (photoId, username) => {
     };
     axios.delete(`${window.location.protocol}//${window.location.host}/api/photos/${photoId}`, config)
         .then((res) => {
-            console.log(res)
         })
   }
 }

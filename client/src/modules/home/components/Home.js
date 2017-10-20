@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import nav from '../../nav';
 import cards from '../../cards';
-import auth from '../../auth';
 import { connect } from 'react-redux';
 import { fetchHomeFeed } from '../actions';
 
@@ -18,7 +17,6 @@ class Home extends Component {
     }
 
     render() {
-      console.log(this.props.cardIds)
         return (
             <div>
             {this.props.cardIds.map(cardId => {

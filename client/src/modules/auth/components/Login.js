@@ -25,13 +25,10 @@ const renderField = ({
   type,
   meta: { touched, error }
 }) =>
-  <div>
-    <label>
-      {label}
-    </label>
-    <div>
-      <input {...input} placeholder={label} type={type} />
-      {touched && ((error && <span>{error}</span>))}
+  <div style={{ height: '50px' }} >
+    <div style={{display: 'flex', flexDirection: 'column'}} >
+      <input style={{ backgroundColor: '#f9f9f9', border:'1px solid #eee', height: '30px', borderRadius: '3px' }} {...input} placeholder={label} type={type} />
+      {touched && ((error && <span style={{ color:'#ff5e5e' }}>{error}</span>))}
     </div>
   </div>
 
@@ -46,17 +43,21 @@ const renderAlert = (error) => {
 const Login = props => {
   const { handleSubmit, pristine, submitting } = props
   return (
-    <form onSubmit={handleSubmit(props.submitLogin)}>
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', height: '100vh' }}>
+    <form style={{ width: '80%', padding: '50px 0', display: 'flex', flexDirection: 'column'}} onSubmit={handleSubmit(props.submitLogin)}>
       <Field name="username" type="text" component={renderField} label="Username" />
       <Field name="password" type="password" component={renderField} label="Password" />
       <div>
         {renderAlert(props.error)}
-        <button type="submit" disabled={pristine || submitting}>
-          Submit
+        <button style={{ backgroundColor: '#458eff', width: '100%', height: '28px', border: '1px solid', borderRadius: '3px', borderColor: '#458eff', fontFamily: 'Roboto', fontWeight: '700', fontSize: '15px', color: 'white' }} type="submit" disabled={pristine || submitting}>
+          Log In
         </button>
       </div>
-      {"Don't have an account?"} <a onClick={props.toggleDisplay}>Sign up</a>
+      <div style={{alignSelf: 'center', position: 'absolute', bottom: '50px'}}>
+      {"Don't have an account?"} <a style={{ color: '#458eff' }} onClick={props.toggleDisplay}>Sign up</a>
+      </div>
     </form>
+    </div>
   );
 };
 

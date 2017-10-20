@@ -127,7 +127,6 @@ router.post(
           Tag.create(tag, (err, res) => {
             Tag.getTagId(tag, (err, res) => {
               Tag.create_photos_tags(savedData.id, res.id, (err, res => {
-                console.log(res)
               }))
             })
           });

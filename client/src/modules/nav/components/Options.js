@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { selectOptions } from '../selectors'
 import * as actions from '../actions'
 import { createStructuredSelector } from 'reselect'
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import core from '../../core';
 
 class Options extends Component {

@@ -324,7 +324,6 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
  router.get('/self/homefeed', requireAuth, (req, res, next) => {
     let user = req.user;
     delete user.password;
-    console.log(user)
     Photo.getHomeFeed(user.id, 12, req.query.max_id, (err, entities, cursor) => {
       if (err) {
         next(err);
