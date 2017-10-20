@@ -48,7 +48,7 @@ class Profile extends Component {
 
     renderMoreButton() {
         if(this.props.profile.hasMore) {
-            return <button onClick={this.fetchMorePhotos.bind(this)}>Load more</button>
+            return <button style={{backgroundColor: '#458eff', border: '1px solid', width: '82%', height: '28px', borderRadius: '3px', borderColor: '#458eff', fontFamily: 'Roboto', fontWeight: '700', fontSize:'15px', color: 'white'}} onClick={this.fetchMorePhotos.bind(this)}>Load more</button>
         }
         return <div></div>
     }

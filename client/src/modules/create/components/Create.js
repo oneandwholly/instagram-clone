@@ -8,6 +8,8 @@ import photos from '../../photos';
 import home from '../../home';
 import cards from '../../cards';
 import styled from 'styled-components';
+import plus_icon from '../../../assets/icons/plus.png';
+import core from '../../core';
 
 const FILE_FIELD_NAME = 'files';
 
@@ -16,10 +18,11 @@ const renderDropzoneInput = (field) => {
   return (
     <div>
       <Dropzone
+        style={{ border: '1px solid #eee', width: '100%', height: '300px', display: 'flex', justifyContent: 'center'}}
         name={field.name}
         onDrop={( filesToUpload, e ) => field.input.onChange(filesToUpload)}
       >
-        <div>Try dropping some files here, or click to select files to upload.</div>
+        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}><StyledUploadImage src={plus_icon} /></div>
       </Dropzone>
       {field.meta.touched &&
         field.meta.error &&
@@ -61,7 +64,6 @@ class Create extends Component {
     return (
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <div>
-          <label htmlFor={FILE_FIELD_NAME}>Files</label>
           <Field
             name={FILE_FIELD_NAME}
             component={renderDropzoneInput}
@@ -70,11 +72,13 @@ class Create extends Component {
           <StyledField name="caption" component="textarea" type="text" />
         </div>
         <div>
-          <button type="submit">
-            Submit
-          </button>
-          <button onClick={reset}>
-            Clear Values
+          
+          <button type="submit" style={{width: '100%', border: 'none', backgroundColor: 'white'}}>
+            <core.components.ListItem>
+            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%'}}>
+            <div>Submit</div>
+            </div>
+            </core.components.ListItem>
           </button>
         </div>
       </form>
@@ -82,11 +86,18 @@ class Create extends Component {
   }
 }
 
+const StyledUploadImage = styled.img`
+  width: 80px;
+`;
+
 const StyledField = styled(Field)`
   width: 100%;
   height: 100px;
   color: blue;
   resize: none;
+  border: 1px solid #eee;
+  border-right: none;
+  border-left: none;
 `;
 
 const form = reduxForm({

@@ -5,6 +5,7 @@ import * as actions from '../actions'
 import { createStructuredSelector } from 'reselect'
 import { withRouter} from 'react-router-dom';
 import styled from 'styled-components';
+import core from '../../core';
 
 class More extends Component {
     handleCancelClick() {
@@ -20,8 +21,12 @@ class More extends Component {
       if(this.props.visibility) {
         return (
           <OpaqueWrapper>
-            <div onClick={this.handleDelete.bind(this)}>delete</div>
-            <div onClick={this.handleCancelClick.bind(this)}>cancel</div>
+            <core.components.ListItem>
+            <div style={{textAlign: 'center', padding: '16px'}} onClick={this.handleDelete.bind(this)}>Delete</div>
+            </core.components.ListItem>
+            <core.components.ListItem>
+            <div style={{textAlign: 'center' , padding: '16px'}} onClick={this.handleCancelClick.bind(this)}>Cancel</div>
+            </core.components.ListItem>
           </OpaqueWrapper>
         )
       }
@@ -35,6 +40,9 @@ const OpaqueWrapper = styled.div`
   background: rgba(54, 25, 25, .5);
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 `;
 
 export default withRouter(connect(createStructuredSelector({
