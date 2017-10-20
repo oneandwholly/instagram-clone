@@ -1,5 +1,19 @@
 'use strict';
 
+const mysql = require('mysql');
+const config = require('../config');
+
+const options = {
+  user: config.get('MYSQL_USER'),
+  password: config.get('MYSQL_PASSWORD'),
+  database: 'instaclone'
+};
+
+if (config.get('INSTANCE_CONNECTION_NAME') && config.get('NODE_ENV') === 'production') {
+  options.socketPath = `/cloudsql/${config.get('INSTANCE_CONNECTION_NAME')}`;
+}
+const connection = mysql.createConnection(options);
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const images = require('../lib/images');
@@ -208,15 +222,50 @@ router.get('/:id', requireAuth, (req, res, next) => {
 router.delete('/:photo_id', requireAuth, (req, res, next) => {
 
   //delete other rows that have this photo as foriegn key
-  
-  Photo.delete(req.params.photo_id, (err, response) => {
-    if (err) {
+  Photo.read(req.params.photo_id, (err, photo) => {
+    if(err) {
       next(err);
       return;
     }
+    if (photo.user_id === req.user.id) {
+      // Delete photo only if the photo belongs to the user
 
-    res.json(response);
+      // Delete likes
+      connection.query(`DELETE FROM likes WHERE photo_id = ${photo.id}`, (err, result) => {
+        if (err) {
+          next(err);
+          return;
+        }
+
+        connection.query(`DELETE FROM photos_tags WHERE photo_id = ${photo.id}`, (err, result) => {
+        if (err) {
+          next(err);
+          return;
+        }
+
+        connection.query(`DELETE FROM comments WHERE photo_id = ${photo.id}`, (err, result) => {
+          if (err) {
+            next(err);
+            return;
+          }
+          Photo.delete(req.params.photo_id, (err, result) => {
+            if (err) {
+              next(err);
+              return;
+            }
+        
+            res.json(result);
+          })
+          
+        })
+      })
+      })
+
+    } else {
+      next();
+    }
   })
+  
 })
 
 router.get('/:photo_id/comments', requireAuth, (req, res, next) => {
