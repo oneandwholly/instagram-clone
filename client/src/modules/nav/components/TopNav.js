@@ -43,6 +43,12 @@ class TopNav extends Component {
         if(this.props.active === "create") {
             return <div>New Post</div>
         }
+        if(this.props.active === "explore") {
+            return <div>Explore</div>
+        }
+        if(this.props.active === "activity") {
+            return <div>Activity</div>
+        }
         return <div></div>
     }
     renderRight() {

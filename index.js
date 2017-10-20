@@ -18,6 +18,9 @@ app.use('/api/users', require('./users/api'));
 // Photos
 app.use('/api/photos', require('./photos/api'));
 
+// Tags
+app.use('/api/tags', require('./tags/api'));
+
 // Basic error handler
 app.use((err, req, res, next) => {
   /* jshint unused:false */

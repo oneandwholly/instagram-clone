@@ -8,6 +8,7 @@ import create from '../../create';
 import home from '../../home';
 import profiles from '../../profiles';
 import cards from '../../cards';
+import search from '../../search';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import IndexRoute from './IndexRoute';
@@ -46,6 +47,8 @@ class App extends Component {
                     <MainContent>
                         <Switch>
                             <Route path='/' exact component={IndexRoute} />
+                            <Route path='/explore' exact component={search.components.Search} />
+                            <Route path='/activity' exact component={search.components.Activity} />
                             <Route path='/create/post' exact component={create.components.Create} />
                             <Route path='/p/:id' component={cards.components.CardWrapper} />
                             <Route path='/:username' component={profiles.components.Profile} />

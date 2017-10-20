@@ -16,6 +16,18 @@ if (config.get('INSTANCE_CONNECTION_NAME') && config.get('NODE_ENV') === 'produc
 
 const connection = mysql.createConnection(options);
 
+function match(query, cb) {
+  connection.query(
+    `SELECT id, username FROM users WHERE username LIKE '${query}%'`, (err, results) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      
+      cb(null, results);
+    });
+}
+
 function create (data, cb) {
 
   bcrypt.genSalt(10, (err, salt) => {
@@ -115,6 +127,7 @@ function comparePassword (candidatePassword, userPassword, done) {
 }
 
 module.exports = {
+  match,
   create: create,
   read: read,
   update: update,

@@ -59,6 +59,17 @@ router.get('/self', requireAuth, (req, res, next) => {
   })
 })
 
+router.get('/search', requireAuth, (req, res, next) => {
+  User.match(req.query.q, (err, list) => {
+    if (err) {
+      next(err);
+      return;
+    }
+
+    res.json(list);
+  })
+})
+
 router.get('/username/:username', requireAuth, (req, res, next) => {
   User.readByUsername(req.params.username, (err, user) => {
     if (err) {
@@ -489,7 +500,6 @@ router.get('/:id/photos/recent', requireAuth, (req, res, next) => {
     //   });
     // });
    });
-
 
 /**
  * GET /api/users/self/follows

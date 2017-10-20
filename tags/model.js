@@ -15,6 +15,17 @@ if (config.get('INSTANCE_CONNECTION_NAME') && config.get('NODE_ENV') === 'produc
 
 const connection = mysql.createConnection(options);
 
+function match(query, cb) {
+  connection.query(
+    `SELECT * FROM tags WHERE tag_name LIKE '${query}%'`, (err, results) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      cb(null, results);
+    });
+}
+
 function getTagsByPhotoId (photo_id, cb) {
     connection.query(
         `SELECT tag_name FROM photos_tags INNER JOIN tags ON tag_id = id WHERE photo_id=${photo_id}`, (err, results) => {
@@ -60,6 +71,7 @@ function create_photos_tags (photo_id, tag_id, cb) {
 }
 
 module.exports = {
+  match,
   create,
   create_photos_tags,
   getTagId,

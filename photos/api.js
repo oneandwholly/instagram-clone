@@ -206,6 +206,9 @@ router.get('/:id', requireAuth, (req, res, next) => {
 })
 
 router.delete('/:photo_id', requireAuth, (req, res, next) => {
+
+  //delete other rows that have this photo as foriegn key
+  
   Photo.delete(req.params.photo_id, (err, response) => {
     if (err) {
       next(err);

@@ -26,9 +26,9 @@ class BottomNav extends Component {
                 <ParentDiv>
                     <FixedDiv>
                         <BottomNavItem name='home' path='/' icon={home_icon} activeIcon={home_icon_active} />
-                        <BottomNavItem name='explore' path='/' icon={explore_icon} activeIcon={explore_icon_active} />
+                        <BottomNavItem name='explore' path='/explore' icon={explore_icon} activeIcon={explore_icon_active} />
                         <BottomNavItem name='create' path='/create/post' icon={create_icon} activeIcon={create_icon_active} />
-                        <BottomNavItem name='activity' path='/' icon={activity_icon} activeIcon={activity_icon_active} />
+                        <BottomNavItem name='activity' path='/activity' icon={activity_icon} activeIcon={activity_icon_active} />
                         <BottomNavItem name='profile' path={`/${this.props.authUsername}`} icon={profile_icon} activeIcon={profile_icon_active} />
                     </FixedDiv>
                 </ParentDiv>
