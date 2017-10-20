@@ -8,6 +8,8 @@ import liked_icon from '../../../assets/icons/liked.png';
 import comment_icon from '../../../assets/icons/comment-o.png';
 import more_icon from '../../../assets/icons/more.png';
 
+import Caption from './Caption';
+
 import nav from '../../nav'
 class Card extends Component {
   constructor(props){
@@ -95,6 +97,7 @@ class Card extends Component {
                 <div style={{ padding: '0 16px'}}>
                     <div style={{margin: '8px 0 0 0'}}>{this.renderLikeButton()}<img style={{ marginLeft: '10px', height: '24px'}} onClick={this.focusOnNewCommentInput.bind(this)} alt='' src={comment_icon}/></div>
                     <div>{this.renderNumOfLikes()}</div>
+                    <Caption photo={this.props.photo}/>
                     <div>{this.renderComments()}</div>
                     <div>
                         <input

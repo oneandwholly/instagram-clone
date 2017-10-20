@@ -17,7 +17,8 @@ class Cell extends Component {
 
 
 const StyledCell = styled(Cell)`
-    width: auto%;
+    width: auto;
+    max-width:33.3%;
     margin: 1px
 `;
 
