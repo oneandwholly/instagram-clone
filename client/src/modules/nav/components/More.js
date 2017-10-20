@@ -6,6 +6,8 @@ import { createStructuredSelector } from 'reselect'
 import { withRouter} from 'react-router-dom';
 import styled from 'styled-components';
 import core from '../../core';
+import auth from '../../auth';
+import users from '../../users';
 
 class More extends Component {
     handleCancelClick() {
@@ -17,13 +19,23 @@ class More extends Component {
       this.props.history.push('/')
       this.props.hideMore();
     }
+
+    renderDeleteButton() {
+      if(this.props.allUsers[this.props.authUserId].username === this.props.moreUsername) {
+        return (
+          <core.components.ListItem>
+            <div style={{textAlign: 'center', padding: '16px'}} onClick={this.handleDelete.bind(this)}>Delete</div>
+          </core.components.ListItem>
+        );
+      }
+
+      return <div></div>
+    }
     render() {
       if(this.props.visibility) {
         return (
           <OpaqueWrapper>
-            <core.components.ListItem>
-            <div style={{textAlign: 'center', padding: '16px'}} onClick={this.handleDelete.bind(this)}>Delete</div>
-            </core.components.ListItem>
+            {this.renderDeleteButton()}
             <core.components.ListItem>
             <div style={{textAlign: 'center' , padding: '16px'}} onClick={this.handleCancelClick.bind(this)}>Cancel</div>
             </core.components.ListItem>
@@ -48,5 +60,7 @@ const OpaqueWrapper = styled.div`
 export default withRouter(connect(createStructuredSelector({
       visibility: selectMore,
       morePhotoId: selectMorePhotoId,
-      moreUsername: selectMoreUsername
+      moreUsername: selectMoreUsername,
+      authUserId: auth.selectors.selectUserId,
+      allUsers: users.selectors.selectById
   }), actions)(More))
