@@ -91,8 +91,8 @@ class Card extends Component {
     }
     render() {
         return (
-            <div>
-                <div>{this.renderTopBar()}</div>
+            <OuterDiv>
+            <div>{this.renderTopBar()}</div>
                 <div>{this.renderPhoto()}</div>
                 <div style={{ padding: '0 16px'}}>
                     <div style={{margin: '8px 0 0 0'}}>{this.renderLikeButton()}<img style={{ marginLeft: '10px', height: '24px'}} onClick={this.focusOnNewCommentInput.bind(this)} alt='' src={comment_icon}/></div>
@@ -109,10 +109,20 @@ class Card extends Component {
                     </div>
                 </div>
                 <br></br>
-            </div>
+            </OuterDiv>
         )
     }
 }
+
+const OuterDiv = styled.div`
+    max-width: 600px;
+    margin: 0px auto;
+    @media (min-width: 600px) { 
+        margin : 60px auto;
+        border: 1px solid #eee;
+        border-radius: 3px;
+    }
+`;
 
 const Photo = styled.img`
     width: 100%;
