@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { selectError } from '../selectors';
 import { createStructuredSelector } from 'reselect';
+import styled from 'styled-components';
 
 const validate = values => {
   const errors = {}
@@ -54,7 +55,7 @@ const renderAlert = (error) => {
 const Signup = props => {
   const { handleSubmit, pristine, submitting } = props
   return (
-    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', height: '100vh'}}>
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', height: '100vh'}} className={props.className}>
     <form style={{ width: '80%', padding: '50px 0', display: 'flex', flexDirection: 'column', height: '100%'}} onSubmit={handleSubmit((data) => {
         props.submitSignup(data);
       })}>
@@ -76,9 +77,19 @@ const Signup = props => {
   );
 };
 
+const StyledSignup = styled(Signup)`
+max-width: 600px;
+
+@media (min-width: 600px) { 
+    margin : 60px auto;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+`;
+
 export default connect(createStructuredSelector({
   error: selectError
 }), actions)(reduxForm({
   form: 'signup', // a unique identifier for this form
   validate
-})(Signup));
+})(StyledSignup));

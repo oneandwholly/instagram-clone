@@ -19,11 +19,11 @@ const Cell = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-    width: 32vw;
+    width: 33%;
     max-width: 290px;
-    height: 32vw;
+    height: 33vw;
     max-height: 290px;
-    margin: .5vw;
+    margin: .1vw;
     @media (min-width: 900px) { 
         margin : 4px;
         border: 1px solid #eee;
