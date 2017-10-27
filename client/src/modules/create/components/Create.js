@@ -59,7 +59,7 @@ class Create extends Component {
       return <Redirect to='/' />
     }
     return (
-      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+      <form className={this.props.className} onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <div>
           <Field
             name={FILE_FIELD_NAME}
@@ -88,7 +88,7 @@ const StyledUploadImage = styled.img`
 `;
 
 const StyledField = styled(Field)`
-  width: 100%;
+  width: 99%;
   height: 100px;
   color: blue;
   resize: none;
@@ -101,4 +101,14 @@ const form = reduxForm({
   form: 'simple',
 })(Create);
 
-export default connect((state) => ({authUserId: state.auth.userId}), {postPhotos: photos.actions.postPhotos, setActive: nav.actions.setActive})(form);
+const StyledForm = styled(form)`
+max-width: 600px;
+
+@media (min-width: 600px) { 
+    margin : 60px auto;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+`;
+
+export default connect((state) => ({authUserId: state.auth.userId}), {postPhotos: photos.actions.postPhotos, setActive: nav.actions.setActive})(StyledForm);

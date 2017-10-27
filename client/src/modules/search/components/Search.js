@@ -106,7 +106,13 @@ class Search extends Component {
 }
 
 const StyledSearch = styled(Search)`
+max-width: 600px;
 
+@media (min-width: 600px) { 
+    margin : 60px auto;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
 `;
 
 

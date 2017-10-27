@@ -5,18 +5,36 @@ import { Link } from 'react-router-dom';
 class PhotoGrid extends Component {
     render() {
         return (
-            <div>{this.props.photos.map((photo, index) => {
-                return <Link key={photo.id} to={`/p/${photo.id}`}><Cell src={photo.image_url} index={index} alt=''/></Link>
+            <div className={this.props.className}>{this.props.photos.map((photo, index) => {
+                return <StyledLink key={photo.id} to={`/p/${photo.id}`}><Cell style={{'backgroundImage': `url('${photo.image_url}')`}}/></StyledLink>
             })}</div>
         );
     }
 }
 
-const Cell = styled.img`
-    padding: ${props => props.index%3 === 1 ? '.3% 1%' : '0 0 .3% 0'};
-    width: 32.6%;
-    height: 33%;
-    overflow: hidden;
+const Cell = styled.div`
+    width: 100%;
+    height: 100%;
+    background-size: cover;
 `;
 
-export default PhotoGrid;
+const StyledLink = styled(Link)`
+    width: 32vw;
+    max-width: 290px;
+    height: 32vw;
+    max-height: 290px;
+    margin: .5vw;
+    @media (min-width: 900px) { 
+        margin : 4px;
+        border: 1px solid #eee;
+        border-radius: 3px;
+    }
+`;
+
+const StyledPhotoGrid = styled(PhotoGrid)`
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+`;
+
+export default StyledPhotoGrid;

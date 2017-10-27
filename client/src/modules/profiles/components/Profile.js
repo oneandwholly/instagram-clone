@@ -10,6 +10,7 @@ import { createSelector } from 'reselect';
 import FollowButton from './FollowButton';
 import UserInfoSection from './UserInfoSection';
 import PhotoGrid from './PhotoGrid';
+import styled from 'styled-components';
 
 class Profile extends Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class Profile extends Component {
             return <div>loading profile...</div>
         }
         return (
-            <div>
+            <div className={this.props.className}>
                 <UserInfoSection user={this.props.user}>
                     <FollowButton toggleFollow={this.props.toggleFollow} authUserId={this.props.authUserId} profileUser={this.props.user} followStatus={this.props.profile.followStatus} />
                 </UserInfoSection>
@@ -67,6 +68,11 @@ class Profile extends Component {
         );
     }
 }
+
+const StyledProfile = styled(Profile)`
+    max-width: 900px;
+    margin: 0px auto;
+`;
 
 export default connect(createSelector(
     selectAllProfiles,
@@ -83,6 +89,6 @@ export default connect(createSelector(
         } 
         return { profile, user, photos, authUserId }
     }
-), { setActive: nav.actions.setActive, fetchMorePhotos, getProfile, getFollowStatus, toggleFollow })(Profile);
+), { setActive: nav.actions.setActive, fetchMorePhotos, getProfile, getFollowStatus, toggleFollow })(StyledProfile);
 
 
