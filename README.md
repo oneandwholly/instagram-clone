@@ -1,3 +1,4 @@
+![Screenshot](http://i.imgur.com/u3HEs9r.gif)
 # instagram-clone
 DEMO: https://instagram-clone-guide.appspot.com
 
